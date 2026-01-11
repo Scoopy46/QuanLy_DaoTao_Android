@@ -70,6 +70,15 @@
         <activity
             android:name=".ui.activities.UpdateLopActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.activities.NganhListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.AddNganhActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.UpdateNganhActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
