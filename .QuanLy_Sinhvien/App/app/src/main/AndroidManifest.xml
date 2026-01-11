@@ -71,6 +71,33 @@
             android:name=".ui.activities.UpdateLopActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.activities.NganhListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.AddNganhActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.UpdateNganhActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.MonHocListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.AddMonHocActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.UpdateMonHocActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.KhoaListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.AddKhoaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.UpdateKhoaActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.PhanCongGiangDayActivity"
             android:exported="false" />
     </application>

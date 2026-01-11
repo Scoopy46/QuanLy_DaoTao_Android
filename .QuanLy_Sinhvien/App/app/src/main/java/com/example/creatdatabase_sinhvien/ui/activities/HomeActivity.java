@@ -13,7 +13,7 @@ import com.example.creatdatabase_sinhvien.R;
  * Màn hình Home - Quản lý đào tạo
  */
 public class HomeActivity extends AppCompatActivity {
-    private Button btnQuanLySinhVien, btnQuanLyGiaoVien, btnQuanLyLop, btnQuanLyNguoiDung, btnPhanCongGiangDay;
+    private Button btnQuanLySinhVien, btnQuanLyGiaoVien, btnQuanLyLop, btnQuanLyNguoiDung, btnQuanLyNganh, btnQuanLyMonHoc, btnQuanLyKhoa, btnPhanCongGiangDay;
     private Button btnLogin, btnLogout;
     private TextView txtUserInfo;
     private SharedPreferences sharedPreferences;
@@ -42,6 +42,9 @@ public class HomeActivity extends AppCompatActivity {
         btnQuanLyGiaoVien = findViewById(R.id.btnQuanLyGiaoVien);
         btnQuanLyLop = findViewById(R.id.btnQuanLyLop);
         btnQuanLyNguoiDung = findViewById(R.id.btnQuanLyNguoiDung);
+        btnQuanLyNganh = findViewById(R.id.btnQuanLyNganh);
+        btnQuanLyMonHoc = findViewById(R.id.btnQuanLyMonHoc);
+        btnQuanLyKhoa = findViewById(R.id.btnQuanLyKhoa);
         btnPhanCongGiangDay = findViewById(R.id.btnPhanCongGiangDay);
         btnLogin = findViewById(R.id.btnLogin);
         btnLogout = findViewById(R.id.btnLogout);
@@ -66,6 +69,21 @@ public class HomeActivity extends AppCompatActivity {
 
         btnQuanLyNguoiDung.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, UsersListActivity.class);
+            startActivity(intent);
+        });
+
+        btnQuanLyNganh.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, NganhListActivity.class);
+            startActivity(intent);
+        });
+
+        btnQuanLyMonHoc.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, MonHocListActivity.class);
+            startActivity(intent);
+        });
+
+        btnQuanLyKhoa.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, KhoaListActivity.class);
             startActivity(intent);
         });
 
