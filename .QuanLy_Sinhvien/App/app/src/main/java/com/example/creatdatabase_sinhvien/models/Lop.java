@@ -91,5 +91,12 @@ public class Lop implements Serializable {
     public void setTenKhoa(String tenKhoa) {
         this.tenKhoa = tenKhoa != null ? tenKhoa : "";
     }
+
+    @Override
+    public String toString() {
+        String name = tenLop != null && !tenLop.isEmpty() ? tenLop : "";
+        String id = maLop != null && !maLop.isEmpty() ? maLop : "";
+        return !name.isEmpty() ? name : id;
+    }
 }
 

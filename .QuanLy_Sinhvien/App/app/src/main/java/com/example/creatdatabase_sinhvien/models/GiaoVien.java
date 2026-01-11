@@ -141,5 +141,13 @@ public class GiaoVien implements Serializable {
     public void setUserID(Integer userID) {
         this.userID = userID;
     }
+
+    @Override
+    public String toString() {
+        String name = hoten != null && !hoten.isEmpty() ? hoten : "";
+        String id = maGV != null && !maGV.isEmpty() ? maGV : "";
+        if (!name.isEmpty() && !id.isEmpty()) return id + " - " + name;
+        return !name.isEmpty() ? name : id;
+    }
 }
 

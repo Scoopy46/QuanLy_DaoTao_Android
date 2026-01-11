@@ -13,7 +13,7 @@ import com.example.creatdatabase_sinhvien.R;
  * Màn hình Home - Quản lý đào tạo
  */
 public class HomeActivity extends AppCompatActivity {
-    private Button btnQuanLySinhVien, btnQuanLyGiaoVien, btnQuanLyLop, btnQuanLyNguoiDung;
+    private Button btnQuanLySinhVien, btnQuanLyGiaoVien, btnQuanLyLop, btnQuanLyNguoiDung, btnPhanCongGiangDay;
     private Button btnLogin, btnLogout;
     private TextView txtUserInfo;
     private SharedPreferences sharedPreferences;
@@ -42,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         btnQuanLyGiaoVien = findViewById(R.id.btnQuanLyGiaoVien);
         btnQuanLyLop = findViewById(R.id.btnQuanLyLop);
         btnQuanLyNguoiDung = findViewById(R.id.btnQuanLyNguoiDung);
+        btnPhanCongGiangDay = findViewById(R.id.btnPhanCongGiangDay);
         btnLogin = findViewById(R.id.btnLogin);
         btnLogout = findViewById(R.id.btnLogout);
         txtUserInfo = findViewById(R.id.txtUserInfo);
@@ -65,6 +66,11 @@ public class HomeActivity extends AppCompatActivity {
 
         btnQuanLyNguoiDung.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, UsersListActivity.class);
+            startActivity(intent);
+        });
+
+        btnPhanCongGiangDay.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, PhanCongGiangDayActivity.class);
             startActivity(intent);
         });
 
