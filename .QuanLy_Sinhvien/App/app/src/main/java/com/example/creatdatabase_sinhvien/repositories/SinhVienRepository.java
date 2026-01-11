@@ -45,28 +45,80 @@ public class SinhVienRepository {
      * Lấy tất cả sinh viên
      */
     public void getAllSinhVien(SinhVienCallback callback) {
+        Log.d(TAG, "========== getAllSinhVien START ==========");
+        Log.d(TAG, "API URL: https://nguyenha-001-site1.ltempurl.com/api/SinhVien");
+        Log.d(TAG, "Request method: GET");
         executor.execute(() -> {
-            apiService.getAllSinhVien().enqueue(new Callback<List<SinhVien>>() {
-                @Override
-                public void onResponse(Call<List<SinhVien>> call, Response<List<SinhVien>> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        Log.d(TAG, "Get all success: " + response.body().size() + " items");
-                        callback.onSuccess(response.body());
-                    } else {
-                        String error = "Lỗi: " + response.code() + " - " + response.message();
-                        Log.e(TAG, error);
+            try {
+                Call<List<SinhVien>> call = apiService.getAllSinhVien();
+                Log.d(TAG, "Call created successfully");
+                Log.d(TAG, "Enqueueing call...");
+                call.enqueue(new Callback<List<SinhVien>>() {
+                    @Override
+                    public void onResponse(Call<List<SinhVien>> call, Response<List<SinhVien>> response) {
+                        Log.d(TAG, "========== Response received ==========");
+                        try {
+                            if (call.request() != null) {
+                                Log.d(TAG, "Request URL: " + call.request().url());
+                                Log.d(TAG, "Request method: " + call.request().method());
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error getting request info", e);
+                        }
+                        Log.d(TAG, "Response code: " + response.code());
+                        Log.d(TAG, "Response message: " + response.message());
+                        try {
+                            Log.d(TAG, "Response headers: " + response.headers());
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error getting response headers", e);
+                        }
+                        Log.d(TAG, "Is successful: " + response.isSuccessful());
+                        
+                        if (response.code() == 403) {
+                            Log.e(TAG, "ERROR 403 FORBIDDEN - Server từ chối truy cập");
+                            Log.e(TAG, "Có thể do: thiếu authentication, CORS, hoặc quyền truy cập");
+                        }
+                        
+                        if (response.isSuccessful() && response.body() != null) {
+                            Log.d(TAG, "Get all success: " + response.body().size() + " items");
+                            callback.onSuccess(response.body());
+                        } else {
+                            String error = "Lỗi: " + response.code() + " - " + response.message();
+                            Log.e(TAG, "Response error: " + error);
+                            try {
+                                if (response.errorBody() != null) {
+                                    String errorBody = response.errorBody().string();
+                                    Log.e(TAG, "Error body: " + errorBody);
+                                } else {
+                                    Log.e(TAG, "Error body is null");
+                                }
+                            } catch (Exception e) {
+                                Log.e(TAG, "Error reading error body", e);
+                            }
+                            callback.onError(error);
+                        }
+                        Log.d(TAG, "========== Response handled ==========");
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<SinhVien>> call, Throwable t) {
+                        Log.e(TAG, "========== onFailure ==========");
+                        String error = "Lỗi kết nối: " + t.getMessage();
+                        Log.e(TAG, "Error message: " + error);
+                        Log.e(TAG, "Request URL: " + (call.request() != null ? call.request().url() : "null"));
+                        if (t.getCause() != null) {
+                            Log.e(TAG, "Cause: " + t.getCause().getMessage(), t.getCause());
+                        }
+                        Log.e(TAG, "Full stack trace:", t);
                         callback.onError(error);
                     }
-                }
-
-                @Override
-                public void onFailure(Call<List<SinhVien>> call, Throwable t) {
-                    String error = "Lỗi kết nối: " + t.getMessage();
-                    Log.e(TAG, error, t);
-                    callback.onError(error);
-                }
-            });
+                });
+            } catch (Exception e) {
+                Log.e(TAG, "Exception creating/enqueueing call", e);
+                callback.onError("Lỗi: " + e.getMessage());
+            }
         });
+        Log.d(TAG, "========== getAllSinhVien END ==========");
     }
 
     /**

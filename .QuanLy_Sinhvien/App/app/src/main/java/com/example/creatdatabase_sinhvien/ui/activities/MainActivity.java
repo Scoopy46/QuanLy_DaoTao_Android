@@ -279,7 +279,31 @@ public class MainActivity extends AppCompatActivity {
         String lop = edtLop.getText().toString().trim();
         String anh = currentImagePath;
         
-        return new SinhVien(maSV, hoTen, namSinh, lop, anh);
+        // Tách hoTen thành hodem và ten
+        String hodem = "";
+        String ten = "";
+        if (hoTen != null && !hoTen.isEmpty()) {
+            String[] parts = hoTen.trim().split("\\s+");
+            if (parts.length > 0) {
+                // Phần cuối là tên
+                ten = parts[parts.length - 1];
+                // Phần còn lại là họ đệm
+                if (parts.length > 1) {
+                    hodem = String.join(" ", java.util.Arrays.copyOf(parts, parts.length - 1));
+                }
+            } else {
+                ten = hoTen;
+            }
+        }
+        
+        // Chuyển namSinh thành ngaySinh (format: YYYY-01-01)
+        String ngaySinh = namSinh + "-01-01";
+        
+        // Lấy lop làm maLop
+        String maLop = lop;
+        
+        // Tạo SinhVien với schema mới
+        return new SinhVien(maSV, hodem, ten, ngaySinh, "", maLop, anh, "");
     }
 
     private void fillForm(SinhVien sv) {

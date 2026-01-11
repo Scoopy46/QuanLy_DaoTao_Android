@@ -11,31 +11,48 @@ public class SinhVien {
     @SerializedName("maSV")
     private String maSV;
     
-    @SerializedName("hoTen")
-    private String hoTen;
+    @SerializedName("hodem")
+    private String hodem;
     
-    @SerializedName("namSinh")
-    private int namSinh;
+    @SerializedName("ten")
+    private String ten;
     
-    @SerializedName("lop")
-    private String lop;
+    @SerializedName("ngaySinh")
+    private String ngaySinh;
+    
+    @SerializedName("gioiTinh")
+    private String gioiTinh;
+    
+    @SerializedName("maLop")
+    private String maLop;
     
     @SerializedName("anh")
     private String anh;
+    
+    @SerializedName("tenLop")
+    private String tenLop; // Chỉ dùng để hiển thị
 
     public SinhVien() {
         this.maSV = "";
-        this.hoTen = "";
-        this.lop = "";
+        this.hodem = "";
+        this.ten = "";
+        this.ngaySinh = "";
+        this.gioiTinh = "";
+        this.maLop = "";
         this.anh = "";
+        this.tenLop = "";
     }
 
-    public SinhVien(String maSV, String hoTen, int namSinh, String lop, String anh) {
+    public SinhVien(String maSV, String hodem, String ten, String ngaySinh, 
+                    String gioiTinh, String maLop, String anh, String tenLop) {
         this.maSV = maSV != null ? maSV : "";
-        this.hoTen = hoTen != null ? hoTen : "";
-        this.namSinh = namSinh;
-        this.lop = lop != null ? lop : "";
+        this.hodem = hodem != null ? hodem : "";
+        this.ten = ten != null ? ten : "";
+        this.ngaySinh = ngaySinh != null ? ngaySinh : "";
+        this.gioiTinh = gioiTinh != null ? gioiTinh : "";
+        this.maLop = maLop != null ? maLop : "";
         this.anh = anh != null ? anh : "";
+        this.tenLop = tenLop != null ? tenLop : "";
     }
 
     // Getters and Setters
@@ -47,28 +64,44 @@ public class SinhVien {
         this.maSV = maSV != null ? maSV : "";
     }
 
-    public String getHoTen() {
-        return hoTen;
+    public String getHodem() {
+        return hodem;
     }
 
-    public void setHoTen(String hoTen) {
-        this.hoTen = hoTen != null ? hoTen : "";
+    public void setHodem(String hodem) {
+        this.hodem = hodem != null ? hodem : "";
     }
 
-    public int getNamSinh() {
-        return namSinh;
+    public String getTen() {
+        return ten;
     }
 
-    public void setNamSinh(int namSinh) {
-        this.namSinh = namSinh;
+    public void setTen(String ten) {
+        this.ten = ten != null ? ten : "";
     }
 
-    public String getLop() {
-        return lop;
+    public String getNgaySinh() {
+        return ngaySinh;
     }
 
-    public void setLop(String lop) {
-        this.lop = lop != null ? lop : "";
+    public void setNgaySinh(String ngaySinh) {
+        this.ngaySinh = ngaySinh != null ? ngaySinh : "";
+    }
+
+    public String getGioiTinh() {
+        return gioiTinh;
+    }
+
+    public void setGioiTinh(String gioiTinh) {
+        this.gioiTinh = gioiTinh != null ? gioiTinh : "";
+    }
+
+    public String getMaLop() {
+        return maLop;
+    }
+
+    public void setMaLop(String maLop) {
+        this.maLop = maLop != null ? maLop : "";
     }
 
     public String getAnh() {
@@ -77,6 +110,47 @@ public class SinhVien {
 
     public void setAnh(String anh) {
         this.anh = anh != null ? anh : "";
+    }
+
+    public String getTenLop() {
+        return tenLop;
+    }
+
+    public void setTenLop(String tenLop) {
+        this.tenLop = tenLop != null ? tenLop : "";
+    }
+
+    // Helper methods để tương thích ngược với code cũ
+    public String getHoTen() {
+        return (hodem != null ? hodem : "") + " " + (ten != null ? ten : "").trim();
+    }
+
+    // Tương thích ngược: namSinh -> ngaySinh (lấy năm từ ngaySinh)
+    public int getNamSinh() {
+        if (ngaySinh != null && !ngaySinh.isEmpty()) {
+            try {
+                // Giả sử ngaySinh có format "YYYY-MM-DD" hoặc "DD/MM/YYYY"
+                if (ngaySinh.contains("/")) {
+                    String[] parts = ngaySinh.split("/");
+                    if (parts.length >= 3) {
+                        return Integer.parseInt(parts[2]);
+                    }
+                } else if (ngaySinh.contains("-")) {
+                    String[] parts = ngaySinh.split("-");
+                    if (parts.length >= 1) {
+                        return Integer.parseInt(parts[0]);
+                    }
+                }
+            } catch (Exception e) {
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+    // Tương thích ngược: lop -> maLop hoặc tenLop
+    public String getLop() {
+        return maLop != null && !maLop.isEmpty() ? maLop : (tenLop != null ? tenLop : "");
     }
 }
 

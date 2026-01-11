@@ -10,7 +10,7 @@ import com.example.creatdatabase_sinhvien.R;
  * Màn hình Home - Quản lý đào tạo
  */
 public class HomeActivity extends AppCompatActivity {
-    private Button btnQuanLySinhVien, btnQuanLyGiaoVien;
+    private Button btnQuanLySinhVien, btnQuanLyGiaoVien, btnQuanLyLop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +24,7 @@ public class HomeActivity extends AppCompatActivity {
     private void initViews() {
         btnQuanLySinhVien = findViewById(R.id.btnQuanLySinhVien);
         btnQuanLyGiaoVien = findViewById(R.id.btnQuanLyGiaoVien);
+        btnQuanLyLop = findViewById(R.id.btnQuanLyLop);
     }
 
     private void setupListeners() {
@@ -34,6 +35,11 @@ public class HomeActivity extends AppCompatActivity {
 
         btnQuanLyGiaoVien.setOnClickListener(v -> {
             android.content.Intent intent = new android.content.Intent(HomeActivity.this, GiaoVienListActivity.class);
+            startActivity(intent);
+        });
+
+        btnQuanLyLop.setOnClickListener(v -> {
+            android.content.Intent intent = new android.content.Intent(HomeActivity.this, LopListActivity.class);
             startActivity(intent);
         });
     }

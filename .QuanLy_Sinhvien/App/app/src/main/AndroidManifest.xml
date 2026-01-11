@@ -45,6 +45,15 @@
         <activity
             android:name=".ui.activities.UpdateGiaoVienActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.activities.LopListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.AddLopActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.UpdateLopActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

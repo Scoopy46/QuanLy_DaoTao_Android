@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Singleton Retrofit client factory
  */
 public class RetrofitClient {
-    // Dùng HTTP (không phải HTTPS)
+    // Dùng HTTPS
     private static final String BASE_URL = "https://nguyenha-001-site1.ltempurl.com/";
     private static Retrofit retrofit;
 

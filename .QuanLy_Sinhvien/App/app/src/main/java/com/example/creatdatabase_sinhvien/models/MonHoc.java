@@ -11,15 +11,20 @@ public class MonHoc {
     
     @SerializedName("tenMon")
     private String tenMon;
+    
+    @SerializedName("soTinChi")
+    private Integer soTinChi;
 
     public MonHoc() {
         this.maMH = "";
         this.tenMon = "";
+        this.soTinChi = 0;
     }
 
-    public MonHoc(String maMH, String tenMon) {
+    public MonHoc(String maMH, String tenMon, Integer soTinChi) {
         this.maMH = maMH != null ? maMH : "";
         this.tenMon = tenMon != null ? tenMon : "";
+        this.soTinChi = soTinChi != null ? soTinChi : 0;
     }
 
     public String getMaMH() {
@@ -36,6 +41,14 @@ public class MonHoc {
 
     public void setTenMon(String tenMon) {
         this.tenMon = tenMon != null ? tenMon : "";
+    }
+
+    public Integer getSoTinChi() {
+        return soTinChi;
+    }
+
+    public void setSoTinChi(Integer soTinChi) {
+        this.soTinChi = soTinChi != null ? soTinChi : 0;
     }
 
     @Override
