@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Cho phép kết nối HTTP và HTTPS cho development -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <!-- Chấp nhận system certificates -->
+            <certificates src="system" />
+            <!-- Chấp nhận user certificates (self-signed) - chỉ cho development -->
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+    
+    <!-- Cho phép kết nối đến localhost và IP cục bộ -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">10.0.2.2</domain>
+        <domain includeSubdomains="true">127.0.0.1</domain>
+        <domain includeSubdomains="true">192.168.0.0</domain>
+        <domain includeSubdomains="true">192.168.1.0</domain>
+        <domain includeSubdomains="true">192.168.2.0</domain>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
+

@@ -1,0 +1,7 @@
+﻿services:
+  studentmanager:
+    image: studentmanager
+    build:
+      context: .
+      dockerfile: StudentManager/Dockerfile
+
