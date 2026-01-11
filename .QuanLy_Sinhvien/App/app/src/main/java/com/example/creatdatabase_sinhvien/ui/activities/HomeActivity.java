@@ -3,20 +3,38 @@ package com.example.creatdatabase_sinhvien.ui.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.creatdatabase_sinhvien.R;
+import com.example.creatdatabase_sinhvien.repositories.GiaoVienRepository;
+import com.example.creatdatabase_sinhvien.repositories.KhoaRepository;
+import com.example.creatdatabase_sinhvien.repositories.LopRepository;
+import com.example.creatdatabase_sinhvien.repositories.MonHocRepository;
+import com.example.creatdatabase_sinhvien.repositories.NganhRepository;
+import com.example.creatdatabase_sinhvien.repositories.SinhVienRepository;
+import com.example.creatdatabase_sinhvien.repositories.UsersRepository;
 
 /**
  * Màn hình Home - Quản lý đào tạo
  */
 public class HomeActivity extends AppCompatActivity {
-    private Button btnQuanLySinhVien, btnQuanLyGiaoVien, btnQuanLyLop, btnQuanLyNguoiDung, btnQuanLyNganh, btnQuanLyMonHoc, btnQuanLyKhoa, btnPhanCongGiangDay, btnPhanCongChuNhiem;
-    private Button btnLogin, btnLogout;
+    private android.view.View btnQuanLySinhVien, btnQuanLyGiaoVien, btnQuanLyLop, btnQuanLyNguoiDung, btnQuanLyNganh, btnQuanLyMonHoc, btnQuanLyKhoa, btnPhanCongGiangDay, btnPhanCongChuNhiem;
+    private ImageButton btnLogin, btnLogout;
     private TextView txtUserInfo;
+
+    private TextView tvCountSinhVien, tvCountLop, tvCountMonHoc, tvCountGiaoVien, tvCountKhoa, tvCountNganh;
+
     private SharedPreferences sharedPreferences;
+
+    private SinhVienRepository sinhVienRepository;
+    private LopRepository lopRepository;
+    private MonHocRepository monHocRepository;
+    private GiaoVienRepository giaoVienRepository;
+    private KhoaRepository khoaRepository;
+    private NganhRepository nganhRepository;
+    private UsersRepository usersRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +45,17 @@ public class HomeActivity extends AppCompatActivity {
         
         initViews();
         setupListeners();
+
+        sinhVienRepository = new SinhVienRepository();
+        lopRepository = new LopRepository();
+        monHocRepository = new MonHocRepository();
+        giaoVienRepository = new GiaoVienRepository();
+        khoaRepository = new KhoaRepository();
+        nganhRepository = new NganhRepository();
+        usersRepository = new UsersRepository();
+
         updateLoginUI();
+        loadStats();
     }
 
     @Override
@@ -35,6 +63,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onResume();
         // Cập nhật UI khi quay lại màn hình
         updateLoginUI();
+        loadStats();
     }
 
     private void initViews() {
@@ -50,6 +79,13 @@ public class HomeActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnLogout = findViewById(R.id.btnLogout);
         txtUserInfo = findViewById(R.id.txtUserInfo);
+
+        tvCountSinhVien = findViewById(R.id.tvCountSinhVien);
+        tvCountLop = findViewById(R.id.tvCountLop);
+        tvCountMonHoc = findViewById(R.id.tvCountMonHoc);
+        tvCountGiaoVien = findViewById(R.id.tvCountGiaoVien);
+        tvCountKhoa = findViewById(R.id.tvCountKhoa);
+        tvCountNganh = findViewById(R.id.tvCountNganh);
     }
 
     private void setupListeners() {
@@ -143,6 +179,86 @@ public class HomeActivity extends AppCompatActivity {
             btnLogout.setVisibility(android.view.View.GONE);
             txtUserInfo.setVisibility(android.view.View.GONE);
         }
+    }
+
+    private void loadStats() {
+        // SV
+        sinhVienRepository.getAllSinhVien(new SinhVienRepository.SinhVienCallback() {
+            @Override
+            public void onSuccess(java.util.List<com.example.creatdatabase_sinhvien.models.SinhVien> sinhViens) {
+                runOnUiThread(() -> tvCountSinhVien.setText(String.valueOf(sinhViens != null ? sinhViens.size() : 0)));
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> tvCountSinhVien.setText("--"));
+            }
+        });
+
+        // Lớp
+        lopRepository.getAllLop(new LopRepository.LopCallback() {
+            @Override
+            public void onSuccess(java.util.List<com.example.creatdatabase_sinhvien.models.Lop> lops) {
+                runOnUiThread(() -> tvCountLop.setText(String.valueOf(lops != null ? lops.size() : 0)));
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> tvCountLop.setText("--"));
+            }
+        });
+
+        // Môn
+        monHocRepository.getAllMonHoc(new MonHocRepository.MonHocCallback() {
+            @Override
+            public void onSuccess(java.util.List<com.example.creatdatabase_sinhvien.models.MonHoc> monHocList) {
+                runOnUiThread(() -> tvCountMonHoc.setText(String.valueOf(monHocList != null ? monHocList.size() : 0)));
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> tvCountMonHoc.setText("--"));
+            }
+        });
+
+        // GV
+        giaoVienRepository.getAllGiaoVien(null, new GiaoVienRepository.GiaoVienCallback() {
+            @Override
+            public void onSuccess(java.util.List<com.example.creatdatabase_sinhvien.models.GiaoVien> giaoViens) {
+                runOnUiThread(() -> tvCountGiaoVien.setText(String.valueOf(giaoViens != null ? giaoViens.size() : 0)));
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> tvCountGiaoVien.setText("--"));
+            }
+        });
+
+        // Khoa
+        khoaRepository.getAllKhoa(new KhoaRepository.KhoaCallback() {
+            @Override
+            public void onSuccess(java.util.List<com.example.creatdatabase_sinhvien.models.Khoa> khoas) {
+                runOnUiThread(() -> tvCountKhoa.setText(String.valueOf(khoas != null ? khoas.size() : 0)));
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> tvCountKhoa.setText("--"));
+            }
+        });
+
+        // Ngành
+        nganhRepository.getAllNganh(new NganhRepository.NganhCallback() {
+            @Override
+            public void onSuccess(java.util.List<com.example.creatdatabase_sinhvien.models.Nganh> nganhs) {
+                runOnUiThread(() -> tvCountNganh.setText(String.valueOf(nganhs != null ? nganhs.size() : 0)));
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> tvCountNganh.setText("--"));
+            }
+        });
     }
 }
 
