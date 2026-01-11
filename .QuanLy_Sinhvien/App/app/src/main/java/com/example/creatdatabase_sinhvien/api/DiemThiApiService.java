@@ -14,7 +14,7 @@ import retrofit2.http.Query;
 public interface DiemThiApiService {
     @GET("api/DiemThi")
     Call<List<DiemThi>> getDiemThi(
-        @Query("lop") String lop,
+        @Query("maLop") String maLop,
         @Query("maMH") String maMH
     );
 
