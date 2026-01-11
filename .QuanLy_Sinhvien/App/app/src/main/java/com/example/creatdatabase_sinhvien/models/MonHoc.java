@@ -1,11 +1,12 @@
 package com.example.creatdatabase_sinhvien.models;
 
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
 /**
  * Model đại diện cho thông tin môn học
  */
-public class MonHoc {
+public class MonHoc implements Serializable {
     @SerializedName("maMH")
     private String maMH;
     

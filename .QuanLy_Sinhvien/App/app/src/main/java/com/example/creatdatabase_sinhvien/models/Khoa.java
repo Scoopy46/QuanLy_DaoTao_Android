@@ -1,11 +1,12 @@
 package com.example.creatdatabase_sinhvien.models;
 
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
 /**
  * Model đại diện cho thông tin Khoa (Department)
  */
-public class Khoa {
+public class Khoa implements Serializable {
     @SerializedName("maKhoa")
     private String maKhoa;
     
