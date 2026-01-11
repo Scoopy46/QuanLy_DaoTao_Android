@@ -20,7 +20,6 @@ import com.example.creatdatabase_sinhvien.models.GiaoVien;
 import com.example.creatdatabase_sinhvien.models.Lop;
 import com.example.creatdatabase_sinhvien.models.MonHoc;
 import com.example.creatdatabase_sinhvien.models.PhanCongGiangDay;
-import com.example.creatdatabase_sinhvien.models.PhanCongGiangDayRequest;
 import com.example.creatdatabase_sinhvien.repositories.GiaoVienRepository;
 import com.example.creatdatabase_sinhvien.repositories.LopRepository;
 import com.example.creatdatabase_sinhvien.repositories.MonHocRepository;
@@ -144,6 +143,10 @@ public class PhanCongGiangDayActivity extends AppCompatActivity {
                     return;
                 }
                 selectedLop = lopList.get(position - 1);
+                android.util.Log.d("PhanCongGiangDay", "Lop selected - maLop: '" + (selectedLop != null ? selectedLop.getMaLop() : "null") + "', tenLop: '" + (selectedLop != null ? selectedLop.getTenLop() : "null") + "'");
+                if (selectedLop != null && (selectedLop.getMaLop() == null || selectedLop.getMaLop().trim().isEmpty())) {
+                    android.util.Log.e("PhanCongGiangDay", "WARNING: selectedLop has empty maLop! selectedLop=" + selectedLop);
+                }
                 loadPhanCongBySelectedLop();
             }
 
@@ -233,6 +236,16 @@ public class PhanCongGiangDayActivity extends AppCompatActivity {
             return;
         }
 
+        // Lưu maLop vào biến local để đảm bảo không bị mất
+        final String savedMaLop = selectedLop.getMaLop();
+        if (savedMaLop == null || savedMaLop.trim().isEmpty()) {
+            android.util.Log.e("PhanCongGiangDay", "ERROR: savedMaLop is null or empty! selectedLop=" + selectedLop);
+            Toast.makeText(this, "Lỗi: Mã lớp không hợp lệ. Vui lòng chọn lại lớp.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        
+        android.util.Log.d("PhanCongGiangDay", "showAddDialog - savedMaLop: '" + savedMaLop + "'");
+
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_add_phan_cong_giang_day, null);
         TextView tvLop = view.findViewById(R.id.tvLopValue);
         Spinner spMon = view.findViewById(R.id.spinnerMonHoc);
@@ -269,10 +282,68 @@ public class PhanCongGiangDayActivity extends AppCompatActivity {
             MonHoc mh = monHocList.get(posMon - 1);
             GiaoVien gv = giaoVienList.get(posGV - 1);
 
-            PhanCongGiangDayRequest req = new PhanCongGiangDayRequest(selectedLop.getMaLop(), mh.getMaMH(), gv.getMaGV());
+            // Validate objects
+            if (mh == null) {
+                Toast.makeText(this, "Lỗi: Môn học không hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (gv == null) {
+                Toast.makeText(this, "Lỗi: Giáo viên không hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Sử dụng savedMaLop đã lưu trước đó
+            String maLop = savedMaLop;
+            String maMH = mh.getMaMH();
+            String maGV = gv.getMaGV();
+
+            // Log giá trị gốc trước khi validate
+            android.util.Log.d("PhanCongGiangDay", "Raw values - maLop: '" + maLop + "' (null? " + (maLop == null) + "), maMH: '" + maMH + "', maGV: '" + maGV + "'");
+            android.util.Log.d("PhanCongGiangDay", "selectedLop object: " + selectedLop);
+            android.util.Log.d("PhanCongGiangDay", "mh object: " + mh);
+            android.util.Log.d("PhanCongGiangDay", "gv object: " + gv);
+
+            // Validate các giá trị không được null hoặc empty
+            // Lưu ý: các model có thể trả về empty string "" thay vì null
+            if (maLop == null || maLop.trim().isEmpty()) {
+                android.util.Log.e("PhanCongGiangDay", "ERROR: maLop is null or empty!");
+                android.util.Log.e("PhanCongGiangDay", "selectedLop=" + selectedLop);
+                android.util.Log.e("PhanCongGiangDay", "selectedLop.getMaLop()=" + maLop);
+                Toast.makeText(this, "Lỗi: Mã lớp không hợp lệ. Vui lòng chọn lại lớp.", Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (maMH == null || maMH.trim().isEmpty()) {
+                android.util.Log.e("PhanCongGiangDay", "ERROR: maMH is null or empty!");
+                android.util.Log.e("PhanCongGiangDay", "mh=" + mh);
+                android.util.Log.e("PhanCongGiangDay", "mh.getMaMH()=" + maMH);
+                Toast.makeText(this, "Lỗi: Mã môn học không hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (maGV == null || maGV.trim().isEmpty()) {
+                android.util.Log.e("PhanCongGiangDay", "ERROR: maGV is null or empty!");
+                android.util.Log.e("PhanCongGiangDay", "gv=" + gv);
+                android.util.Log.e("PhanCongGiangDay", "gv.getMaGV()=" + maGV);
+                Toast.makeText(this, "Lỗi: Mã giáo viên không hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Trim và đảm bảo không phải empty
+            maLop = maLop.trim();
+            maMH = maMH.trim();
+            maGV = maGV.trim();
+
+            // Final check sau khi trim
+            if (maLop.isEmpty() || maMH.isEmpty() || maGV.isEmpty()) {
+                android.util.Log.e("PhanCongGiangDay", "ERROR: Values are empty after trim!");
+                Toast.makeText(this, "Lỗi: Dữ liệu không hợp lệ sau khi xử lý", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            android.util.Log.d("PhanCongGiangDay", "Final values before API call - maLop: '" + maLop + "' (len=" + maLop.length() + "), maMH: '" + maMH + "' (len=" + maMH.length() + "), maGV: '" + maGV + "' (len=" + maGV.length() + ")");
+            
             btnLuu.setEnabled(false);
             Toast.makeText(this, "Đang lưu...", Toast.LENGTH_SHORT).show();
-            pcgdRepository.save(req, new PhanCongGiangDayRepository.OperationCallback() {
+            pcgdRepository.save(maLop, maMH, maGV, new PhanCongGiangDayRepository.OperationCallback() {
                 @Override
                 public void onSuccess() {
                     runOnUiThread(() -> {
@@ -296,11 +367,31 @@ public class PhanCongGiangDayActivity extends AppCompatActivity {
     }
 
     private void showUpdateDialog(PhanCongGiangDay item) {
-        if (selectedLop == null || item == null) return;
+        if (selectedLop == null || item == null) {
+            android.util.Log.e("PhanCongGiangDay", "ERROR: selectedLop or item is null!");
+            return;
+        }
         if (giaoVienList.isEmpty()) {
             Toast.makeText(this, "Danh sách giáo viên trống (chờ tải dữ liệu)", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // Lưu maLop và maMH vào biến local để đảm bảo không bị mất
+        final String savedMaLop = selectedLop.getMaLop();
+        final String savedMaMH = item.getMaMH();
+        
+        if (savedMaLop == null || savedMaLop.trim().isEmpty()) {
+            android.util.Log.e("PhanCongGiangDay", "ERROR: savedMaLop is null or empty! selectedLop=" + selectedLop);
+            Toast.makeText(this, "Lỗi: Mã lớp không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (savedMaMH == null || savedMaMH.trim().isEmpty()) {
+            android.util.Log.e("PhanCongGiangDay", "ERROR: savedMaMH is null or empty! item=" + item);
+            Toast.makeText(this, "Lỗi: Mã môn học không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        android.util.Log.d("PhanCongGiangDay", "showUpdateDialog - savedMaLop: '" + savedMaLop + "', savedMaMH: '" + savedMaMH + "'");
 
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_update_phan_cong_giang_day, null);
         TextView tvMon = view.findViewById(R.id.tvMonValue);
@@ -327,10 +418,60 @@ public class PhanCongGiangDayActivity extends AppCompatActivity {
                 return;
             }
             GiaoVien gv = giaoVienList.get(posGV - 1);
-            PhanCongGiangDayRequest req = new PhanCongGiangDayRequest(selectedLop.getMaLop(), item.getMaMH(), gv.getMaGV());
+            
+            // Validate objects
+            if (gv == null) {
+                Toast.makeText(this, "Lỗi: Giáo viên không hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
+            // Sử dụng savedMaLop và savedMaMH đã lưu trước đó
+            String maLop = savedMaLop;
+            String maMH = savedMaMH;
+            String maGV = gv.getMaGV();
+
+            // Log giá trị gốc trước khi validate
+            android.util.Log.d("PhanCongGiangDay", "Update - Raw values - maLop: '" + maLop + "' (null? " + (maLop == null) + "), maMH: '" + maMH + "', maGV: '" + maGV + "'");
+
+            if (maLop == null || maLop.trim().isEmpty()) {
+                android.util.Log.e("PhanCongGiangDay", "ERROR: maLop is null or empty!");
+                android.util.Log.e("PhanCongGiangDay", "selectedLop=" + selectedLop);
+                android.util.Log.e("PhanCongGiangDay", "selectedLop.getMaLop()=" + maLop);
+                Toast.makeText(this, "Lỗi: Mã lớp không hợp lệ. Vui lòng chọn lại lớp.", Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (maMH == null || maMH.trim().isEmpty()) {
+                android.util.Log.e("PhanCongGiangDay", "ERROR: maMH is null or empty!");
+                android.util.Log.e("PhanCongGiangDay", "item=" + item);
+                android.util.Log.e("PhanCongGiangDay", "item.getMaMH()=" + maMH);
+                Toast.makeText(this, "Lỗi: Mã môn học không hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (maGV == null || maGV.trim().isEmpty()) {
+                android.util.Log.e("PhanCongGiangDay", "ERROR: maGV is null or empty!");
+                android.util.Log.e("PhanCongGiangDay", "gv=" + gv);
+                android.util.Log.e("PhanCongGiangDay", "gv.getMaGV()=" + maGV);
+                Toast.makeText(this, "Lỗi: Mã giáo viên không hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Trim và đảm bảo không phải empty
+            maLop = maLop.trim();
+            maMH = maMH.trim();
+            maGV = maGV.trim();
+
+            // Final check sau khi trim
+            if (maLop.isEmpty() || maMH.isEmpty() || maGV.isEmpty()) {
+                android.util.Log.e("PhanCongGiangDay", "ERROR: Values are empty after trim!");
+                Toast.makeText(this, "Lỗi: Dữ liệu không hợp lệ sau khi xử lý", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            android.util.Log.d("PhanCongGiangDay", "Update - Final values - maLop: '" + maLop + "' (len=" + maLop.length() + "), maMH: '" + maMH + "' (len=" + maMH.length() + "), maGV: '" + maGV + "' (len=" + maGV.length() + ")");
+            
             btnLuu.setEnabled(false);
             Toast.makeText(this, "Đang cập nhật...", Toast.LENGTH_SHORT).show();
-            pcgdRepository.save(req, new PhanCongGiangDayRepository.OperationCallback() {
+            pcgdRepository.save(maLop, maMH, maGV, new PhanCongGiangDayRepository.OperationCallback() {
                 @Override
                 public void onSuccess() {
                     runOnUiThread(() -> {
@@ -364,7 +505,18 @@ public class PhanCongGiangDayActivity extends AppCompatActivity {
     }
 
     private void doDelete(PhanCongGiangDay item, AlertDialog parentDialog) {
-        pcgdRepository.delete(selectedLop.getMaLop(), item.getMaMH(), new PhanCongGiangDayRepository.OperationCallback() {
+        if (selectedLop == null || item == null) {
+            android.util.Log.e("PhanCongGiangDay", "ERROR: selectedLop or item is null in doDelete!");
+            return;
+        }
+        String maLop = selectedLop.getMaLop();
+        String maMH = item.getMaMH();
+        if (maLop == null || maLop.trim().isEmpty() || maMH == null || maMH.trim().isEmpty()) {
+            android.util.Log.e("PhanCongGiangDay", "ERROR: maLop or maMH is null/empty in doDelete!");
+            Toast.makeText(this, "Lỗi: Dữ liệu không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        pcgdRepository.delete(maLop.trim(), maMH.trim(), new PhanCongGiangDayRepository.OperationCallback() {
             @Override
             public void onSuccess() {
                 runOnUiThread(() -> {
