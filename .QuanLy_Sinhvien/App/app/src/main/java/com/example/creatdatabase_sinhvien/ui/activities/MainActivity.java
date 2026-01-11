@@ -25,7 +25,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private EditText edtMaSV, edtHoTen, edtNamSinh, edtLop, edtTimKiem;
     private ImageView imgAvatar;
-    private Button btnChonAnh, btnThem, btnLuu, btnHuy, btnXoa, btnThoat, btnNhapDiem;
+    private Button btnChonAnh, btnThem, btnLuu, btnHuy, btnXoa, btnVeHome, btnNhapDiem, btnQuanLyGiaoVien;
     private ListView listViewSV;
     
     private SinhVienRepository repository;
@@ -74,8 +74,9 @@ public class MainActivity extends AppCompatActivity {
         btnLuu = findViewById(R.id.btnLuu);
         btnHuy = findViewById(R.id.btnHuy);
         btnXoa = findViewById(R.id.btnXoa);
-        btnThoat = findViewById(R.id.btnThoat);
+        btnVeHome = findViewById(R.id.btnVeHome);
         btnNhapDiem = findViewById(R.id.btnNhapDiem);
+        btnQuanLyGiaoVien = findViewById(R.id.btnQuanLyGiaoVien);
         listViewSV = findViewById(R.id.listViewSV);
     }
 
@@ -84,9 +85,18 @@ public class MainActivity extends AppCompatActivity {
         btnLuu.setOnClickListener(v -> handleLuu());
         btnHuy.setOnClickListener(v -> handleHuy());
         btnXoa.setOnClickListener(v -> handleXoa());
-        btnThoat.setOnClickListener(v -> finish());
+        btnVeHome.setOnClickListener(v -> {
+            android.content.Intent intent = new android.content.Intent(MainActivity.this, HomeActivity.class);
+            intent.setFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        });
         btnNhapDiem.setOnClickListener(v -> {
             android.content.Intent intent = new android.content.Intent(MainActivity.this, NhapDiemActivity.class);
+            startActivity(intent);
+        });
+        btnQuanLyGiaoVien.setOnClickListener(v -> {
+            android.content.Intent intent = new android.content.Intent(MainActivity.this, GiaoVienListActivity.class);
             startActivity(intent);
         });
         btnChonAnh.setOnClickListener(v -> {

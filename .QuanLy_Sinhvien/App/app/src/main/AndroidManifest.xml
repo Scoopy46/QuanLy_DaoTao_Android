@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CreatDatabase_Sinhvien">
         <activity
-            android:name=".ui.activities.MainActivity"
+            android:name=".ui.activities.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +31,19 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.activities.MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.NhapDiemActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.GiaoVienListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.AddGiaoVienActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.UpdateGiaoVienActivity"
             android:exported="false" />
     </application>
 
