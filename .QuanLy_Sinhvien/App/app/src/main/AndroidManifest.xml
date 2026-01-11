@@ -11,6 +11,7 @@
         android:maxSdkVersion="28" />
 
     <application
+        android:name=".MyApplication"
         android:usesCleartextTraffic="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
@@ -30,6 +31,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.activities.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.UsersListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.AddUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.UpdateUserActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activities.MainActivity"
             android:exported="false" />

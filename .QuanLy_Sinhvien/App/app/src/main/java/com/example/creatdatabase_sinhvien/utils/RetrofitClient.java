@@ -1,5 +1,7 @@
 package com.example.creatdatabase_sinhvien.utils;
 
+import android.content.Context;
+import com.example.creatdatabase_sinhvien.MyApplication;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -16,15 +18,16 @@ public class RetrofitClient {
     }
 
     /**
-     * Lấy Retrofit instance (singleton)
+     * Lấy Retrofit instance (singleton) với AuthInterceptor
      */
     public static Retrofit getInstance() {
         if (retrofit == null) {
             synchronized (RetrofitClient.class) {
                 if (retrofit == null) {
+                    Context context = MyApplication.getInstance();
                     retrofit = new Retrofit.Builder()
                             .baseUrl(BASE_URL)
-                            .client(NetworkUtils.createUnsafeOkHttpClient()) // Dùng HTTPS với SSL trust all
+                            .client(NetworkUtils.createUnsafeOkHttpClient(context)) // Dùng HTTPS với SSL trust all và AuthInterceptor
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
                 }

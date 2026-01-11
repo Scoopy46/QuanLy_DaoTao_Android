@@ -1,5 +1,6 @@
 package com.example.creatdatabase_sinhvien.utils;
 
+import android.content.Context;
 import java.security.cert.CertificateException;
 import java.util.concurrent.TimeUnit;
 import javax.net.ssl.SSLContext;
@@ -40,6 +41,24 @@ public class NetworkUtils {
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         return getUnsafeOkHttpClientBuilder()
+                .addInterceptor(logging)
+                .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+                .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+                .build();
+    }
+
+    /**
+     * Tạo OkHttpClient với SSL trust all và AuthInterceptor (tự động thêm token)
+     */
+    public static OkHttpClient createUnsafeOkHttpClient(Context context) {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        AuthInterceptor authInterceptor = new AuthInterceptor(context);
+
+        return getUnsafeOkHttpClientBuilder()
+                .addInterceptor(authInterceptor) // Thêm token vào mọi request
                 .addInterceptor(logging)
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
