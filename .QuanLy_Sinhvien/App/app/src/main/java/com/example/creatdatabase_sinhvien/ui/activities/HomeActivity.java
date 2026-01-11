@@ -3,10 +3,12 @@ package com.example.creatdatabase_sinhvien.ui.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import com.example.creatdatabase_sinhvien.R;
 
 /**
@@ -15,7 +17,8 @@ import com.example.creatdatabase_sinhvien.R;
 public class HomeActivity extends AppCompatActivity {
     private Button btnQuanLySinhVien, btnQuanLyGiaoVien, btnQuanLyLop, btnQuanLyNguoiDung, btnQuanLyNganh, btnQuanLyMonHoc, btnQuanLyKhoa, btnPhanCongGiangDay, btnPhanCongChuNhiem;
     private Button btnLogin, btnLogout;
-    private TextView txtUserInfo;
+    private TextView txtUserInfo, txtDangNhap;
+    private CardView cardLopHoc, cardSinhVien, cardNganh, cardMonHoc, cardGiaoVien, cardNguoiDung, cardKhoa, cardPhanCongGiangDay, cardPhanCongChuNhiem;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -38,6 +41,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        // Hidden buttons for backward compatibility
         btnQuanLySinhVien = findViewById(R.id.btnQuanLySinhVien);
         btnQuanLyGiaoVien = findViewById(R.id.btnQuanLyGiaoVien);
         btnQuanLyLop = findViewById(R.id.btnQuanLyLop);
@@ -50,6 +54,20 @@ public class HomeActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnLogout = findViewById(R.id.btnLogout);
         txtUserInfo = findViewById(R.id.txtUserInfo);
+        
+        // New CardViews
+        cardLopHoc = findViewById(R.id.cardLopHoc);
+        cardSinhVien = findViewById(R.id.cardSinhVien);
+        cardNganh = findViewById(R.id.cardNganh);
+        cardMonHoc = findViewById(R.id.cardMonHoc);
+        cardGiaoVien = findViewById(R.id.cardGiaoVien);
+        cardNguoiDung = findViewById(R.id.cardNguoiDung);
+        cardKhoa = findViewById(R.id.cardKhoa);
+        cardPhanCongGiangDay = findViewById(R.id.cardPhanCongGiangDay);
+        cardPhanCongChuNhiem = findViewById(R.id.cardPhanCongChuNhiem);
+        
+        // Header text
+        txtDangNhap = findViewById(R.id.txtDangNhap);
     }
 
     private void setupListeners() {
@@ -98,6 +116,65 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // CardView listeners
+        cardLopHoc.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, LopListActivity.class);
+            startActivity(intent);
+        });
+
+        cardSinhVien.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
+
+        cardNganh.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, NganhListActivity.class);
+            startActivity(intent);
+        });
+
+        cardMonHoc.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, MonHocListActivity.class);
+            startActivity(intent);
+        });
+
+        cardGiaoVien.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, GiaoVienListActivity.class);
+            startActivity(intent);
+        });
+
+        cardNguoiDung.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, UsersListActivity.class);
+            startActivity(intent);
+        });
+
+        cardKhoa.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, KhoaListActivity.class);
+            startActivity(intent);
+        });
+
+        cardPhanCongGiangDay.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, PhanCongGiangDayActivity.class);
+            startActivity(intent);
+        });
+
+        cardPhanCongChuNhiem.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, PhanCongChuNhiemActivity.class);
+            startActivity(intent);
+        });
+
+        // Login text click
+        txtDangNhap.setOnClickListener(v -> {
+            String userName = sharedPreferences.getString("userName", null);
+            if (userName == null || userName.isEmpty()) {
+                // Chưa đăng nhập - mở LoginActivity
+                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                startActivity(intent);
+            } else {
+                // Đã đăng nhập - có thể mở menu hoặc profile
+                // Tạm thời không làm gì
+            }
+        });
+
         btnLogin.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
             startActivity(intent);
@@ -131,7 +208,12 @@ public class HomeActivity extends AppCompatActivity {
             btnLogin.setVisibility(android.view.View.GONE);
             btnLogout.setVisibility(android.view.View.VISIBLE);
             
-            String userInfo = "Xin chào: " + (fullName != null ? fullName : userName);
+            // Cập nhật text "Đăng nhập" thành tên người dùng
+            String displayName = fullName != null ? fullName : userName;
+            txtDangNhap.setText(displayName);
+            txtDangNhap.setClickable(true);
+            
+            String userInfo = "Xin chào: " + displayName;
             if (type != null) {
                 userInfo += " (" + type + ")";
             }
@@ -142,6 +224,10 @@ public class HomeActivity extends AppCompatActivity {
             btnLogin.setVisibility(android.view.View.VISIBLE);
             btnLogout.setVisibility(android.view.View.GONE);
             txtUserInfo.setVisibility(android.view.View.GONE);
+            
+            // Hiển thị "Đăng nhập"
+            txtDangNhap.setText("Đăng nhập");
+            txtDangNhap.setClickable(true);
         }
     }
 }
