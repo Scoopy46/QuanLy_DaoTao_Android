@@ -6,9 +6,9 @@
     android:background="#E8D5E8"
     android:padding="16dp">
 
-    <!-- Phần filter -->
+    <!-- Bộ lọc: chọn Lớp + chọn Môn -->
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -16,35 +16,31 @@
         android:padding="12dp"
         android:elevation="2dp">
 
-        <EditText
-            android:id="@+id/edtFilterLop"
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Lọc theo lớp..."
-            android:padding="8dp"
-            android:backgroundTint="#9C27B0"
-            android:layout_marginEnd="8dp" />
+            android:text="Chọn Lớp"
+            android:textStyle="bold"
+            android:layout_marginBottom="6dp" />
 
-        <EditText
-            android:id="@+id/edtFilterMaMH"
-            android:layout_width="0dp"
+        <Spinner
+            android:id="@+id/spinnerLop"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Lọc theo mã môn..."
-            android:padding="8dp"
-            android:backgroundTint="#9C27B0"
-            android:layout_marginStart="8dp" />
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chọn Môn"
+            android:textStyle="bold"
+            android:layout_marginBottom="6dp" />
+
+        <Spinner
+            android:id="@+id/spinnerMonHoc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
-
-    <!-- Nút tìm kiếm -->
-    <Button
-        android:id="@+id/btnTimKiem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Tìm kiếm"
-        android:backgroundTint="#2196F3"
-        android:layout_marginBottom="16dp" />
 
     <!-- Tiêu đề danh sách -->
     <TextView
@@ -177,6 +173,14 @@
                 android:backgroundTint="#F44336"
                 android:layout_marginStart="8dp" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnXoaDiem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Xóa điểm (gỡ điểm)"
+            android:backgroundTint="#FF5722"
+            android:layout_marginTop="10dp" />
     </LinearLayout>
 </LinearLayout>
 

@@ -35,9 +35,9 @@ public class DiemThiRepository {
         void onError(String error);
     }
 
-    public void getDiemThi(String lop, String maMH, DiemThiCallback callback) {
+    public void getDiemThi(String maLop, String maMH, DiemThiCallback callback) {
         executor.execute(() -> {
-            apiService.getDiemThi(lop, maMH).enqueue(new Callback<List<DiemThi>>() {
+            apiService.getDiemThi(maLop, maMH).enqueue(new Callback<List<DiemThi>>() {
                 @Override
                 public void onResponse(Call<List<DiemThi>> call, Response<List<DiemThi>> response) {
                     if (response.isSuccessful() && response.body() != null) {
