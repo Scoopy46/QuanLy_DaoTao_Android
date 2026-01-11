@@ -25,7 +25,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private EditText edtMaSV, edtHoTen, edtNamSinh, edtLop, edtTimKiem;
     private ImageView imgAvatar;
-    private Button btnChonAnh, btnThem, btnLuu, btnHuy, btnXoa, btnVeHome, btnNhapDiem, btnQuanLyGiaoVien;
+    private Button btnChonAnh, btnThem, btnLuu, btnHuy, btnXoa, btnVeHome, btnNhapDiem;
     private ListView listViewSV;
     
     private SinhVienRepository repository;
@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         btnXoa = findViewById(R.id.btnXoa);
         btnVeHome = findViewById(R.id.btnVeHome);
         btnNhapDiem = findViewById(R.id.btnNhapDiem);
-        btnQuanLyGiaoVien = findViewById(R.id.btnQuanLyGiaoVien);
         listViewSV = findViewById(R.id.listViewSV);
     }
 
@@ -93,10 +92,6 @@ public class MainActivity extends AppCompatActivity {
         });
         btnNhapDiem.setOnClickListener(v -> {
             android.content.Intent intent = new android.content.Intent(MainActivity.this, NhapDiemActivity.class);
-            startActivity(intent);
-        });
-        btnQuanLyGiaoVien.setOnClickListener(v -> {
-            android.content.Intent intent = new android.content.Intent(MainActivity.this, GiaoVienListActivity.class);
             startActivity(intent);
         });
         btnChonAnh.setOnClickListener(v -> {
